@@ -1,0 +1,366 @@
+<title>Shees Ali Khan's 1st Birthday</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single dark space-themed column. A floating astronaut and a giant "1" with an orbiting planet open the page, then mission details, a launch countdown, and RSVP. One committed night-sky look, so no light variant. */
+:root {
+  --bg: #0A0A2A;
+  --bg2: #14144A;
+  --surface: #17175A;
+  --fg: #F4F2FF;
+  --muted: #B6B4E6;
+  --accent: #FF7A59;
+  --sun: #FFD166;
+  --teal: #4CE0D2;
+  --violet: #8C6BFF;
+  --line: #34348C;
+  --font-display: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+ 
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  background-image: radial-gradient(ellipse at 50% -10%, var(--bg2) 0%, var(--bg) 60%);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  padding-block: 32px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+#burst { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; }
+.wrap { position: relative; z-index: 1; max-width: 700px; margin-inline: auto; display: flex; flex-direction: column; gap: 56px; }
+ 
+.eyebrow { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); }
+ 
+/* Hero */
+.hero { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 190px); gap: 8px 12px; align-items: center; padding: 8px 0 4px; }
+.hero-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.hero h1 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(2.1rem, 8.5vw, 3.5rem); line-height: 1.04; letter-spacing: -0.01em; text-wrap: balance; }
+.hero h1 em { font-style: normal; color: var(--sun); }
+.sub { font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; color: var(--muted); }
+ 
+.age-stage { position: relative; grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; min-height: 15rem; margin-block: 8px; }
+.age {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; position: relative; z-index: 2;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(11rem, 46vw, 17rem); line-height: 0.9;
+  color: var(--accent);
+  -webkit-text-stroke: 4px var(--fg); paint-order: stroke fill;
+  text-shadow: 8px 8px 0 var(--violet);
+  animation: bob 4s ease-in-out infinite;
+}
+.age:focus-visible { outline: 3px solid var(--sun); outline-offset: 8px; border-radius: 12px; }
+.orbit { position: absolute; left: 50%; top: 50%; width: min(86vw, 24rem); aspect-ratio: 1; margin: calc(min(86vw, 24rem) / -2) 0 0 calc(min(86vw, 24rem) / -2); border: 2px dashed var(--line); border-radius: 50%; z-index: 1; animation: spin 18s linear infinite; }
+.orbit.two { width: min(66vw, 18rem); margin: calc(min(66vw, 18rem) / -2) 0 0 calc(min(66vw, 18rem) / -2); animation-duration: 11s; animation-direction: reverse; }
+.planet { position: absolute; border-radius: 50%; }
+.orbit .planet { left: 50%; top: -14px; width: 28px; height: 28px; margin-left: -14px; background: var(--teal); box-shadow: inset -6px -4px 0 rgba(10, 10, 42, 0.28); }
+.orbit.two .planet { width: 20px; height: 20px; top: -10px; margin-left: -10px; background: var(--sun); }
+ 
+.astro { width: 100%; max-width: 190px; justify-self: end; animation: float 6s ease-in-out infinite alternate; }
+.astro svg { display: block; width: 100%; height: auto; overflow: visible; }
+ 
+.hero-date { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 5.2vw, 1.8rem); }
+.hero-date span { font-family: var(--font-mono); font-weight: 500; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+ 
+.rocket { position: absolute; left: 0; top: 16%; width: 54px; opacity: 0.95; animation: fly 13s linear infinite; z-index: 0; }
+.moon { position: absolute; right: -26px; bottom: 64px; width: 84px; height: 84px; border-radius: 50%; background: #E9E7FF; z-index: 0; box-shadow: inset -12px -8px 0 rgba(140, 107, 255, 0.35); animation: float 7s ease-in-out infinite alternate; }
+.moon::before, .moon::after { content: ""; position: absolute; border-radius: 50%; background: rgba(140, 107, 255, 0.35); }
+.moon::before { width: 20px; height: 20px; left: 14px; top: 18px; }
+.moon::after { width: 12px; height: 12px; left: 38px; top: 48px; }
+ 
+/* Details */
+.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 0; }
+.detail { min-width: 0; padding: 18px 18px 20px; background: var(--surface); border: 2px solid var(--line); border-radius: 18px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s ease, border-color 0.2s ease; animation: rise 0.7s ease-out backwards; }
+.detail:nth-child(2) { animation-delay: 0.1s; }
+.detail:nth-child(3) { animation-delay: 0.2s; }
+.detail:nth-child(4) { animation-delay: 0.3s; }
+.detail:hover { transform: translateY(-4px) rotate(-0.6deg); border-color: var(--teal); }
+.detail dt { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+.detail dd { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 1.3rem; line-height: 1.25; overflow-wrap: anywhere; }
+.detail dd small { display: block; margin-top: 4px; font-family: var(--font-body); font-weight: 400; font-size: 0.95rem; color: var(--muted); }
+.place { grid-column: 1 / -1; }
+.map-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 8px 16px; border-radius: 999px; background: var(--sun); color: #1A1440; font-family: var(--font-body); font-weight: 700; font-size: 0.95rem; text-decoration: none; }
+.map-link:hover { background: var(--teal); }
+.map-link:focus-visible, .btn:focus-visible, .addr:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+.addr { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.addr:hover { color: var(--sun); }
+ 
+/* Countdown */
+.countdown h2, .rsvp h2 { margin: 0 0 16px; font-family: var(--font-display); font-weight: 700; font-size: 1.8rem; text-wrap: balance; }
+.clock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.unit { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 14px 6px 10px; text-align: center; }
+.unit b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 9vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums; color: var(--sun); }
+.unit span { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.unit:last-child b { animation: pulse 1s ease-in-out infinite; }
+.clock-done { grid-column: 1 / -1; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; color: var(--sun); }
+ 
+/* RSVP */
+.rsvp { background: var(--surface); border: 2px solid var(--line); border-radius: 22px; padding: 28px 24px; }
+.rsvp blockquote { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.rsvp blockquote p { margin: 0; color: var(--fg); font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 4.6vw, 1.6rem); line-height: 1.4; text-wrap: balance; }
+.rsvp blockquote .by { font-family: var(--font-body); font-weight: 700; font-size: 1rem; color: var(--sun); }
+.rsvp .contact { margin-top: 22px; padding-top: 22px; border-top: 2px dashed var(--line); }
+.contact { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
+.contact .who { min-width: 0; display: flex; flex-direction: column; }
+.contact .who strong { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
+.contact .who code { font-family: var(--font-mono); font-size: 1.15rem; user-select: all; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { appearance: none; font: inherit; font-weight: 700; text-decoration: none; display: inline-block; background: var(--accent); color: #1A1440; border: 0; border-radius: 999px; padding: 11px 20px; cursor: pointer; transition: transform 0.15s ease, background 0.15s ease; }
+.btn.alt { background: var(--teal); }
+.btn:hover { transform: translateY(-2px) scale(1.03); }
+.btn:active { transform: translateY(1px) scale(0.98); }
+ 
+.foot { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.04em; }
+ 
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+@keyframes float { from { transform: translateY(-8px) rotate(-4deg); } to { transform: translateY(10px) rotate(4deg); } }
+@keyframes rise { from { transform: translateY(18px); } to { transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+@keyframes fly { 0% { transform: translate(-80px, 40px) rotate(35deg); } 100% { transform: translate(110vw, -120px) rotate(35deg); } }
+ 
+@media (max-width: 460px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 120px); }
+  .rsvp { padding: 22px 16px; }
+  .moon { width: 60px; height: 60px; right: -20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+ 
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="burst" aria-hidden="true"></canvas>
+ 
+<main class="wrap">
+  <header class="hero">
+    <svg class="rocket" viewBox="0 0 60 100" aria-hidden="true">
+      <path d="M30 4 C46 22 48 52 44 72 L16 72 C12 52 14 22 30 4 Z" fill="#F4F2FF"/>
+      <circle cx="30" cy="38" r="9" fill="#4CE0D2"/>
+      <path d="M16 56 L2 78 L16 72 Z" fill="#FF7A59"/>
+      <path d="M44 56 L58 78 L44 72 Z" fill="#FF7A59"/>
+      <path d="M22 74 L30 98 L38 74 Z" fill="#FFD166"/>
+    </svg>
+    <div class="moon" aria-hidden="true"></div>
+ 
+    <div class="hero-text">
+      <div class="eyebrow">You're invited</div>
+      <h1>Muhammad <em>Shees</em> Ali Khan</h1>
+      <div class="sub">is turning</div>
+    </div>
+ 
+    <div class="astro" aria-hidden="true">
+      <svg viewBox="0 0 200 250">
+        <path d="M148 150 C190 160 196 205 168 232" fill="none" stroke="#B6B4E6" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"/>
+        <rect x="46" y="96" width="108" height="92" rx="20" fill="#B6B4E6"/>
+        <rect x="62" y="100" width="76" height="90" rx="30" fill="#F4F2FF"/>
+        <rect x="30" y="108" width="36" height="62" rx="18" fill="#F4F2FF" transform="rotate(14 48 108)"/>
+        <rect x="134" y="108" width="36" height="62" rx="18" fill="#F4F2FF" transform="rotate(-14 152 108)"/>
+        <circle cx="34" cy="172" r="13" fill="#FF7A59"/>
+        <circle cx="166" cy="172" r="13" fill="#FF7A59"/>
+        <rect x="72" y="172" width="27" height="54" rx="13" fill="#F4F2FF"/>
+        <rect x="101" y="172" width="27" height="54" rx="13" fill="#F4F2FF"/>
+        <rect x="68" y="214" width="35" height="22" rx="10" fill="#FF7A59"/>
+        <rect x="97" y="214" width="35" height="22" rx="10" fill="#FF7A59"/>
+        <rect x="84" y="122" width="32" height="22" rx="6" fill="#8C6BFF"/>
+        <circle cx="92" cy="133" r="4" fill="#FFD166"/>
+        <circle cx="105" cy="133" r="4" fill="#4CE0D2"/>
+        <circle cx="100" cy="74" r="52" fill="#F4F2FF" stroke="#C9CCF0" stroke-width="3"/>
+        <rect x="62" y="50" width="76" height="52" rx="26" fill="#14144A"/>
+        <ellipse cx="80" cy="64" rx="12" ry="7" fill="#4CE0D2" opacity="0.55" transform="rotate(-20 80 64)"/>
+        <circle cx="112" cy="82" r="2.4" fill="#FFD166"/>
+        <circle cx="96" cy="88" r="1.6" fill="#F4F2FF"/>
+        <g transform="rotate(-10 100 20)">
+          <polygon points="100,-10 76,28 124,28" fill="#FFD166"/>
+          <polygon points="100,-10 90,10 110,10" fill="#FF7A59"/>
+          <circle cx="100" cy="-10" r="6" fill="#FF7A59"/>
+        </g>
+      </svg>
+    </div>
+ 
+    <div class="age-stage">
+      <div class="orbit"><i class="planet"></i></div>
+      <div class="orbit two"><i class="planet"></i></div>
+      <button class="age" id="age" type="button" aria-label="1st birthday. Tap for a burst of stars.">1</button>
+    </div>
+ 
+    <div class="hero-date">Sunday, 15 November 2026 <span>8:00 PM</span></div>
+  </header>
+ 
+  <dl class="details">
+    <div class="detail">
+      <dt>Date</dt>
+      <dd>Sunday, 15 November 2026</dd>
+    </div>
+    <div class="detail">
+      <dt>Time</dt>
+      <dd>8:00 PM</dd>
+    </div>
+    <div class="detail place">
+      <dt>Venue</dt>
+      <dd><a class="addr" id="venue" href="https://www.google.com/maps/search/?api=1&amp;query=A.Galleria+SC-28+Sector+11-H+North+Karachi" target="_blank" rel="noopener">A.Galleria<small>SC-28, Sector 11-H, North Karachi</small></a>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=A.Galleria+SC-28+Sector+11-H+North+Karachi" target="_blank" rel="noopener">Open in Google Maps</a></dd>
+    </div>
+  </dl>
+ 
+  <section class="countdown" aria-labelledby="cd-title">
+    <h2 id="cd-title">Counting down to the party</h2>
+    <div class="clock" id="clock" data-date="2026-11-15T20:00:00" role="timer" aria-live="off">
+      <div class="unit"><b id="d">--</b><span>Days</span></div>
+      <div class="unit"><b id="h">--</b><span>Hours</span></div>
+      <div class="unit"><b id="m">--</b><span>Min</span></div>
+      <div class="unit"><b id="s">--</b><span>Sec</span></div>
+    </div>
+  </section>
+ 
+  <section class="rsvp" aria-label="Invitation message">
+    <blockquote>
+      <p>One year of giggles, tiny steps and endless joy. Come and celebrate Shees's first birthday with us, with cake, laughter and lots of love.</p>
+      <p class="by">Your company will make his day even sweeter.</p>
+    </blockquote>
+    <div class="contact">
+      <div class="who">
+        <strong>For details, call or WhatsApp</strong>
+        <code id="phone">0313 2359251</code>
+      </div>
+      <div class="actions">
+        <a class="btn alt" href="https://wa.me/923132359251" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+ 
+  <p class="foot">Muhammad Shees Ali Khan turns 1. We can't wait to celebrate with you.</p>
+</main>
+ 
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+  /* Countdown */
+  var clock = document.getElementById('clock');
+  var target = new Date(clock.dataset.date).getTime();
+  var els = { d: document.getElementById('d'), h: document.getElementById('h'), m: document.getElementById('m'), s: document.getElementById('s') };
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      clock.innerHTML = '<div class="clock-done">The party has begun. Come celebrate!</div>';
+      return false;
+    }
+    var s = Math.floor(diff / 1000);
+    els.d.textContent = Math.floor(s / 86400);
+    els.h.textContent = pad(Math.floor(s % 86400 / 3600));
+    els.m.textContent = pad(Math.floor(s % 3600 / 60));
+    els.s.textContent = pad(s % 60);
+    return true;
+  }
+  if (tick()) {
+    var timer = setInterval(function () { if (!tick()) clearInterval(timer); }, 1000);
+  }
+ 
+  /* Starfield */
+  var sc = document.getElementById('stars');
+  var sx = sc.getContext('2d');
+  var stars = [];
+  var shoot = null;
+  var W = 0, H = 0;
+  function sizeStars() {
+    var dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth; H = window.innerHeight;
+    sc.width = W * dpr; sc.height = H * dpr;
+    sx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stars = [];
+    var n = Math.round(W * H / 7000);
+    for (var i = 0; i < n; i++) {
+      stars.push({ x: Math.random() * W, y: Math.random() * H, r: 0.5 + Math.random() * 1.5, p: Math.random() * 6.28, sp: 0.6 + Math.random() * 1.6 });
+    }
+    drawStars(0);
+  }
+  function drawStars(t) {
+    sx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var a = reduce ? 0.8 : 0.45 + 0.55 * Math.abs(Math.sin(t / 1000 * s.sp + s.p));
+      sx.globalAlpha = a;
+      sx.fillStyle = i % 9 === 0 ? '#FFD166' : '#F4F2FF';
+      sx.beginPath(); sx.arc(s.x, s.y, s.r, 0, 6.283); sx.fill();
+    }
+    if (shoot) {
+      sx.globalAlpha = Math.max(0, 1 - shoot.life / 40);
+      var g = sx.createLinearGradient(shoot.x, shoot.y, shoot.x - shoot.vx * 8, shoot.y - shoot.vy * 8);
+      g.addColorStop(0, '#FFFFFF'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      sx.strokeStyle = g; sx.lineWidth = 2;
+      sx.beginPath(); sx.moveTo(shoot.x, shoot.y); sx.lineTo(shoot.x - shoot.vx * 8, shoot.y - shoot.vy * 8); sx.stroke();
+      shoot.x += shoot.vx; shoot.y += shoot.vy; shoot.life++;
+      if (shoot.life > 40) shoot = null;
+    }
+    sx.globalAlpha = 1;
+  }
+  sizeStars();
+  window.addEventListener('resize', sizeStars);
+  if (!reduce) {
+    (function loop(t) { drawStars(t); requestAnimationFrame(loop); })(0);
+    setInterval(function () {
+      if (!shoot) shoot = { x: Math.random() * W * 0.7 + W * 0.2, y: Math.random() * H * 0.3, vx: 9, vy: 5, life: 0 };
+    }, 4500);
+  }
+ 
+  /* Star burst on tapping the 1 */
+  var bc = document.getElementById('burst');
+  var bx = bc.getContext('2d');
+  var bits = [];
+  var running = false;
+  function sizeBurst() {
+    var dpr = window.devicePixelRatio || 1;
+    bc.width = window.innerWidth * dpr; bc.height = window.innerHeight * dpr;
+    bx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  sizeBurst();
+  window.addEventListener('resize', sizeBurst);
+  var colors = ['#FF7A59', '#FFD166', '#4CE0D2', '#8C6BFF', '#F4F2FF'];
+  function star(ctx, r) {
+    ctx.beginPath();
+    for (var i = 0; i < 10; i++) {
+      var rad = i % 2 ? r * 0.45 : r;
+      var ang = i * Math.PI / 5 - Math.PI / 2;
+      ctx.lineTo(Math.cos(ang) * rad, Math.sin(ang) * rad);
+    }
+    ctx.closePath(); ctx.fill();
+  }
+  function burst(x, y) {
+    for (var i = 0; i < 70; i++) {
+      var a = Math.random() * 6.283, v = 4 + Math.random() * 9;
+      bits.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 5, r: 5 + Math.random() * 8, rot: Math.random() * 3, vr: (Math.random() - 0.5) * 0.3, c: colors[(Math.random() * colors.length) | 0], life: 0 });
+    }
+    if (!running) { running = true; requestAnimationFrame(frame); }
+  }
+  function frame() {
+    bx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    bits = bits.filter(function (p) { return p.life < 140 && p.y < window.innerHeight + 30; });
+    bits.forEach(function (p) {
+      p.life++; p.vy += 0.28; p.vx *= 0.985; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      bx.save(); bx.translate(p.x, p.y); bx.rotate(p.rot);
+      bx.globalAlpha = Math.max(0, 1 - p.life / 140); bx.fillStyle = p.c;
+      star(bx, p.r);
+      bx.restore();
+    });
+    if (bits.length) requestAnimationFrame(frame); else { running = false; bx.clearRect(0, 0, window.innerWidth, window.innerHeight); }
+  }
+  var age = document.getElementById('age');
+  age.addEventListener('click', function () {
+    if (reduce) return;
+    var r = age.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2);
+  });
+  if (!reduce) setTimeout(function () { burst(window.innerWidth / 2, window.innerHeight * 0.35); }, 600);
+})();
+</script>
+ 
